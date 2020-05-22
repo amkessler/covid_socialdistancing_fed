@@ -37,6 +37,23 @@ natl_weekly %>%
 
 
 #highlighting the peak 
+mycolors <- c("gray75", "#E83536")
+
+
+natl_weekly %>% 
+  mutate(highlight = sdindex == max(sdindex),
+         highlight = as_factor(highlight)) %>% 
+  ggplot(aes(x = time,
+             y = sdindex)) +
+  geom_col(aes(fill = highlight),
+           alpha = 0.8) +
+  theme_minimal() +
+  scale_fill_manual(values = mycolors) +
+  labs(title = "Social Distancing Index - National Weekly") +
+  guides(fill = "none")
+
+
+
 natl_weekly %>% 
   mutate(highlight = sdindex == max(sdindex),
          highlight = as_factor(highlight)) %>% 
@@ -47,8 +64,7 @@ natl_weekly %>%
   theme_minimal() +
   scale_fill_manual(values = c("gray75", "#E83536")) +
   labs(title = "Social Distancing Index - National Weekly") +
-  guides(fill = "none")
-
+  guides(fill = "none") 
 
 
 
