@@ -80,6 +80,43 @@ states_weekly_tidy <- states_weekly_tidy %>%
     state = str_to_upper(state)
   )
   
+head(states_weekly_tidy)
+
+
+#line chart from wide table
+states_weekly %>% 
+  ggplot(aes(x = time,
+             y = az)) +
+  geom_line() +
+  theme_minimal()
+
+
+#line chart from long table
+states_weekly_tidy %>% 
+  filter(state == "AZ") %>% 
+  ggplot(aes(x = time,
+             y = sdindex)) +
+  geom_line() +
+  theme_minimal()
+
+
+#faceted for all states
+states_weekly_tidy %>% 
+  ggplot(aes(x = time,
+             y = sdindex)) +
+  geom_line() +
+  theme_minimal() +
+  facet_wrap(~state)
+
+
+#faceted for all states with custom start date
+states_weekly_tidy %>% 
+  filter(time >= "2020-02-01") %>% 
+  ggplot(aes(x = time,
+             y = sdindex)) +
+  geom_line() +
+  theme_minimal() +
+  facet_wrap(~state)
 
 
 
