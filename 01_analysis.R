@@ -1,6 +1,7 @@
 library(tidyverse)
 library(lubridate)
 library(janitor)
+library(tidycensus)
 options(scipen = 999)
 
 # run this to download with the latest data, when desired:
@@ -115,4 +116,16 @@ msa_weekly_tidy <- msa_weekly_tidy %>%
 
 msa_weekly_tidy
 
+msa_weekly_tidy %>% 
+  filter(msa_fips == "all_metros")
+
+msa_weekly_tidy %>% 
+  filter(msa_fips == "10500")
+
+
+#create fips lookup from top two rows of raw data
+msa_fips <- read_csv("raw_data/SD_msa_scaled_weekly.csv") %>% 
+  head(1)
+
+msa_fips
 
