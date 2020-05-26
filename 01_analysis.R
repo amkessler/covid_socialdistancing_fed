@@ -119,6 +119,22 @@ states_weekly_tidy %>%
   facet_wrap(~state)
 
 
+#faceted for selected states only
+states_weekly_tidy %>% 
+  filter(
+    time >= "2020-02-01",
+    state %in% c("NY", "NJ", "TN", "KY", "NV", "AZ", "FL", "GA")
+    ) %>% 
+  ggplot(aes(x = time,
+             y = sdindex)) +
+  geom_line() +
+  theme_minimal() +
+  facet_wrap(~state)
+
+
+
+
+
 
 ### MSA weekly data #### ----------------------------------------------------------------
   
