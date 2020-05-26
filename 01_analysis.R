@@ -67,4 +67,18 @@ states_weekly <- raw_states_weekly %>%
     time = date(time)
   )
 
-states_weekly
+head(states_weekly)
+
+#convert to long/tidy format
+states_weekly_tidy <- states_weekly %>% 
+  pivot_longer(-time, names_to = "state", values_to = "sdindex")
+
+#state name values to uppercase
+states_weekly_tidy <- states_weekly_tidy %>% 
+  mutate(
+    state = str_to_upper(state)
+  )
+  
+  
+  
+
