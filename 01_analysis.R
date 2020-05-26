@@ -5,7 +5,7 @@ library(tidycensus)
 options(scipen = 999)
 
 # run this to download with the latest data, when desired:
-source("00_load_data.R")
+# source("00_load_data.R")
 
 
 # we'll start with the national weekly file - note that week of april 11 is the peak the SDI index measured against
@@ -161,8 +161,61 @@ msa_weekly_tidy %>%
 
 
 
+### County-level weekly data #### ----------------------------------------------------------------
+
+
+raw_counties_weekly <- read_csv("raw_data/SD_counties_scaled_weekly.csv",
+                                skip = 1)
 
 
 
+counties_weekly <- raw_counties_weekly %>% 
+  rename(
+    time = X1,
+  )
 
+colnames(counties_weekly)
+
+#format date
+counties_weekly <- counties_weekly %>% 
+  mutate(
+    time = dmy_hms(time),
+    time = date(time)
+  )
+
+#convert to long/tidy format
+counties_weekly_tidy <- counties_weekly %>% 
+  pivot_longer(-time, names_to = "fips", values_to = "sdindex")
+
+#remove the FIPS prefix from the fips codes
+counties_weekly_tidy <- counties_weekly_tidy %>% 
+  mutate(
+    fips = str_remove(fips, "FIPS_")
+  )
+
+counties_weekly_tidy
+
+#fips code table from tidycensus
+fips_lookup <- fips_codes %>% 
+  mutate(
+    fips = paste0(state_code, county_code)
+  ) %>% 
+  select(-state_code, -county_code)
+
+#join
+counties_weekly_tidy <- inner_join(counties_weekly_tidy, fips_lookup) %>% 
+  select(time, fips, state, county, sdindex)
+
+counties_weekly_tidy
+
+
+#faceted line chart for counties in a specific state, with custom start date
+counties_weekly_tidy %>% 
+  filter(time >= "2020-02-01",
+         state == "NJ") %>% 
+  ggplot(aes(x = time,
+             y = sdindex)) +
+  geom_line() +
+  theme_minimal() +
+  facet_wrap(~county)
 
