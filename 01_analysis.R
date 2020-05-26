@@ -56,7 +56,7 @@ natl_weekly %>%
 
 
 
-### State level weekly data #####
+### State level weekly data ##### --------------------------------------------------------
 
 raw_states_weekly <- read_csv("raw_data/SD_states_scaled_weekly.csv")
 
@@ -79,6 +79,40 @@ states_weekly_tidy <- states_weekly_tidy %>%
     state = str_to_upper(state)
   )
   
+
+
+
+### MSA weekly data #### ----------------------------------------------------------------
   
-  
+raw_msa_weekly <- read_csv("raw_data/SD_msa_scaled_weekly.csv", 
+                                 skip = 1)
+
+msa_weekly <- raw_msa_weekly %>% 
+  rename(
+    time = X1,
+    all_metros = All_MSAs,
+    all_rural = All_Rural
+  )
+
+colnames(raw_msa_weekly)
+
+#format date
+msa_weekly <- msa_weekly %>% 
+  mutate(
+    time = dmy_hms(time),
+    time = date(time)
+  )
+
+#convert to long/tidy format
+msa_weekly_tidy <- msa_weekly %>% 
+  pivot_longer(-time, names_to = "msa_fips", values_to = "sdindex")
+
+#remove the MSA_prefix from the fips codes
+msa_weekly_tidy <- msa_weekly_tidy %>% 
+  mutate(
+    msa_fips = str_remove(msa_fips, "MSA_")
+  )
+
+msa_weekly_tidy
+
 
