@@ -160,9 +160,9 @@ msa_weekly_tidy %>%
   filter(msa_fips == "10500")
 
 
-#create fips lookup from top two rows of raw data
-msa_fips <- read_csv("raw_data/SD_msa_scaled_weekly.csv") %>% 
-  head(1)
 
-msa_fips
+
+
+
+
 
