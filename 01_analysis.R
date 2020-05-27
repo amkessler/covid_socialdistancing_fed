@@ -138,9 +138,20 @@ states_weekly_tidy %>%
   ggplot(aes(x = time,
              y = sdindex,
              group = state)) +
-  geom_line() +
+  geom_line(color = "purple") +
   theme_minimal() +
   gghighlight(state == "NY", label_key = state)
+
+
+#all states on one line chart, with highlighted choice(s)
+states_weekly_tidy %>% 
+  filter(time >= "2020-02-01") %>% 
+  ggplot(aes(x = time,
+             y = sdindex,
+             color = state)) +
+  geom_line() +
+  theme_minimal() +
+  gghighlight(state %in% c("NY", "AZ"), label_key = state)
   
 
 
