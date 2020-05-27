@@ -5,7 +5,7 @@ library(tidycensus)
 options(scipen = 999)
 
 # run this to download with the latest data, when desired:
-# source("00_load_data.R")
+source("00_load_data.R")
 
 
 # we'll start with the national weekly file - note that week of april 11 is the peak the SDI index measured against
@@ -40,7 +40,6 @@ natl_weekly %>%
 #highlighting the peak 
 mycolors <- c("gray75", "#E83536")
 
-
 natl_weekly %>% 
   mutate(highlight = sdindex == max(sdindex),
          highlight = as_factor(highlight)) %>% 
@@ -50,7 +49,7 @@ natl_weekly %>%
            alpha = 0.8) +
   theme_minimal() +
   scale_fill_manual(values = mycolors) +
-  labs(title = "Social Distancing Index - National Weekly") +
+  labs(title = "Federal Reserve Social Distancing Index - National Weekly") +
   guides(fill = "none")
 
 
