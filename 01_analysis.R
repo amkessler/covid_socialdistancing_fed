@@ -2,10 +2,11 @@ library(tidyverse)
 library(lubridate)
 library(janitor)
 library(tidycensus)
+library(gghighlight)
 options(scipen = 999)
 
 # run this to download with the latest data, when desired:
-source("00_load_data.R")
+# source("00_load_data.R")
 
 
 # we'll start with the national weekly file - note that week of april 11 is the peak the SDI index measured against
@@ -131,6 +132,16 @@ states_weekly_tidy %>%
   facet_wrap(~state)
 
 
+#all states on one line chart, with highlighted choice(s)
+states_weekly_tidy %>% 
+  filter(time >= "2020-02-01") %>% 
+  ggplot(aes(x = time,
+             y = sdindex,
+             group = state)) +
+  geom_line() +
+  theme_minimal() +
+  gghighlight(state == "NY", label_key = state)
+  
 
 
 
