@@ -368,4 +368,30 @@ counties_daily_tidy %>%
   filter(time >= "2020-02-01",
          state == "NJ",
          county == "Atlantic County") %>% 
+  ggplot(aes(x = time,
+             y = sdindex)) +
+  geom_line(color = "gray") +
+  geom_smooth() +
+  theme_minimal() 
+
+
+
+
+
+counties_daily_tidy %>% 
+  filter(time >= "2020-02-01",
+         state == "NJ",
+         county == "Atlantic County") %>% 
   View()
+
+
+#MN?
+counties_daily_tidy %>% 
+  filter(time >= "2020-02-01",
+         state == "MN",
+         county == "Hennepin County") %>% 
+  ggplot(aes(x = time,
+             y = sdindex)) +
+  geom_line(color = "gray") +
+  geom_smooth() +
+  theme_minimal() 
