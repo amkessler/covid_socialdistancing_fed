@@ -111,7 +111,7 @@ states_weekly_tidy %>%
 
 #faceted for all states with custom start date
 states_weekly_tidy %>% 
-  filter(time >= "2020-02-01") %>% 
+  filter(time >= "2020-03-01") %>% 
   ggplot(aes(x = time,
              y = sdindex)) +
   geom_line() +
@@ -122,7 +122,7 @@ states_weekly_tidy %>%
 #faceted for selected states only
 states_weekly_tidy %>% 
   filter(
-    time >= "2020-02-01",
+    time >= "2020-03-01",
     state %in% c("NY", "NJ", "TN", "KY", "NV", "AZ", "FL", "GA")
     ) %>% 
   ggplot(aes(x = time,
@@ -138,12 +138,12 @@ states_weekly_tidy %>%
   ggplot(aes(x = time,
              y = sdindex,
              group = state)) +
-  geom_line(color = "purple") +
+  geom_line() +
   theme_minimal() +
   gghighlight(state == "NY", label_key = state)
 
 
-#all states on one line chart, with highlighted choice(s)
+#dual highlights
 states_weekly_tidy %>% 
   filter(time >= "2020-02-01") %>% 
   ggplot(aes(x = time,
@@ -152,8 +152,6 @@ states_weekly_tidy %>%
   geom_line() +
   theme_minimal() +
   gghighlight(state %in% c("NY", "AZ"), label_key = state)
-  
-
 
 
 
@@ -198,12 +196,12 @@ msa_weekly_tidy %>%
 
 
 
+
 ### County-level weekly data #### ----------------------------------------------------------------
 
 
 raw_counties_weekly <- read_csv("raw_data/SD_counties_scaled_weekly.csv",
                                 skip = 1)
-
 
 
 counties_weekly <- raw_counties_weekly %>% 
@@ -248,7 +246,7 @@ counties_weekly_tidy
 
 #faceted line chart for counties in a specific state, with custom start date
 counties_weekly_tidy %>% 
-  filter(time >= "2020-02-01",
+  filter(time >= "2020-03-01",
          state == "NJ") %>% 
   ggplot(aes(x = time,
              y = sdindex)) +
