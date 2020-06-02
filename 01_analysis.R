@@ -315,7 +315,8 @@ counties_daily_tidy %>%
          state == "NJ") %>% 
   ggplot(aes(x = time,
              y = sdindex)) +
-  geom_line() +
+  geom_line(color = "gray") +
+  geom_smooth() +
   theme_minimal() +
   facet_wrap(~county)
 
