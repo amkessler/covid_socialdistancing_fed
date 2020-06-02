@@ -256,3 +256,68 @@ counties_weekly_tidy %>%
   theme_minimal() +
   facet_wrap(~county)
 
+
+
+
+############## DAILY DATA #################################
+
+
+### County-level DAILY data #### ----------------------------------------------------------------
+
+
+raw_counties_daily <- read_csv("raw_data/SD_counties_scaled.csv",
+                                skip = 1)
+
+
+
+counties_daily <- raw_counties_daily %>% 
+  rename(
+    time = X1,
+  )
+
+colnames(counties_daily)
+
+head(counties_daily)
+
+#format date
+counties_daily <- counties_daily %>% 
+  mutate(
+    time = dmy(time)
+  )
+
+#convert to long/tidy format
+counties_daily_tidy <- counties_daily %>% 
+  pivot_longer(-time, names_to = "fips", values_to = "sdindex")
+
+#remove the FIPS prefix from the fips codes
+counties_daily_tidy <- counties_daily_tidy %>% 
+  mutate(
+    fips = str_remove(fips, "FIPS_")
+  )
+
+counties_daily_tidy
+
+#fips code table from tidycensus
+fips_lookup <- fips_codes %>% 
+  mutate(
+    fips = paste0(state_code, county_code)
+  ) %>% 
+  select(-state_code, -county_code)
+
+#join
+counties_daily_tidy <- inner_join(counties_daily_tidy, fips_lookup) %>% 
+  select(time, fips, state, county, sdindex)
+
+counties_daily_tidy
+
+
+#faceted line chart for counties in a specific state, with custom start date
+counties_daily_tidy %>% 
+  filter(time >= "2020-02-01",
+         state == "NJ") %>% 
+  ggplot(aes(x = time,
+             y = sdindex)) +
+  geom_line() +
+  theme_minimal() +
+  facet_wrap(~county)
+
