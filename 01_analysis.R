@@ -3,6 +3,7 @@ library(lubridate)
 library(janitor)
 library(tidycensus)
 library(gghighlight)
+library(tibbletime)
 options(scipen = 999)
 
 # run this to download with the latest data, when desired:
@@ -320,3 +321,37 @@ counties_daily_tidy %>%
   theme_minimal() +
   facet_wrap(~county)
 
+
+#calculating a seven-day moving average
+counties_daily_tidy
+
+#use tibbletime package to create rolling avg
+# https://cran.rstudio.com/web/packages/tibbletime/vignettes/TT-03-rollify-for-rolling-analysis.html
+
+rolling_mean <- tibbletime::rollify(mean, window = 7)
+
+#apply it
+counties_daily_tidy <- counties_daily_tidy %>% 
+  mutate(
+    roll_avg = rolling_mean(sdindex)
+  )
+
+counties_daily_tidy
+
+
+#faceted line chart for counties in a specific state, with custom start date
+counties_daily_tidy %>% 
+  filter(time >= "2020-02-01",
+         state == "NJ") %>% 
+  ggplot(aes(x = time,
+             y = roll_avg)) +
+  geom_line() +
+  theme_minimal() +
+  facet_wrap(~county)
+
+
+counties_daily_tidy %>% 
+  filter(time >= "2020-02-01",
+         state == "NJ",
+         county == "Atlantic County") %>% 
+  View()
