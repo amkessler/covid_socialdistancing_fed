@@ -328,6 +328,10 @@ counties_daily_tidy
 #use tibbletime package to create rolling avg
 # https://cran.rstudio.com/web/packages/tibbletime/vignettes/TT-03-rollify-for-rolling-analysis.html
 
+counties_daily_tidy %>% 
+  as_tbl_time(index = time)
+
+
 rolling_mean <- tibbletime::rollify(mean, window = 7)
 
 #apply it
@@ -348,6 +352,16 @@ counties_daily_tidy %>%
   geom_line() +
   theme_minimal() +
   facet_wrap(~county)
+
+
+counties_daily_tidy %>% 
+  filter(time >= "2020-02-01",
+         state == "NJ",
+         county == "Atlantic County") %>% 
+  ggplot(aes(x = time,
+             y = roll_avg)) +
+  geom_line() +
+  theme_minimal() 
 
 
 counties_daily_tidy %>% 
