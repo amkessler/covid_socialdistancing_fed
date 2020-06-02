@@ -395,3 +395,14 @@ counties_daily_tidy %>%
   geom_line(color = "gray") +
   geom_smooth() +
   theme_minimal() 
+
+
+counties_daily_tidy %>% 
+  filter(time >= "2020-03-01",
+         state == "MN") %>% 
+  ggplot(aes(x = time,
+             y = sdindex)) +
+  geom_line(color = "gray") +
+  geom_smooth() +
+  theme_minimal() +
+  facet_wrap(~county)
